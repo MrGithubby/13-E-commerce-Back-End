@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-// The `/api/products` endpoint
 
-// get all products, includes its associated Category and Tag data
+// /api/products endpoint
+
+// get all products with Category and Tag data
 router.get('/', async (req, res) => {
   try {
     const productData = await Product.findAll({
@@ -21,6 +22,7 @@ router.get('/', async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 // get one product by id, includes its associated Category and Tag data
 router.get('/:id', async (req, res) => {
@@ -49,14 +51,7 @@ router.get('/:id', async (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
-      "product_name": "Basketball",
-      "price": 200.00,
-      "stock": 3,
-      "tagIds": [1, 2, 3, 4]
-    }
-  */
+
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -79,15 +74,6 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
-/* req.body should look like this...
-    {
-      "product_name": "Football",
-      "price": 100.00,
-      "stock": 5,
-      "tagIds": [1, 2, 3, 4]
-    }
-  */
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
